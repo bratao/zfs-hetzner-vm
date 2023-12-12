@@ -544,19 +544,12 @@ echo "======= create zfs pools and datasets =========="
     bpool_disks_partitions+=("${selected_disk}-part2")
   done
 
-  pools_mirror_option=
-  if [[ ${#v_selected_disks[@]} -gt 1 ]]; then
-    if dialog --defaultno --yesno "Do you want to use mirror mode for ${v_selected_disks[*]}?" 30 100; then 
-      pools_mirror_option=mirror
-    fi
-  fi
-
 # shellcheck disable=SC2086
 zpool create \
   $v_bpool_tweaks -O canmount=off -O devices=off \
   -o cachefile=/etc/zpool.cache \
   -O mountpoint=/boot -R $c_zfs_mount_dir -f \
-  $v_bpool_name $pools_mirror_option "${bpool_disks_partitions[@]}"
+  $v_bpool_name raidz2 "${bpool_disks_partitions[@]}"
 
 # shellcheck disable=SC2086
 echo -n "$v_passphrase" | zpool create \
@@ -564,7 +557,7 @@ echo -n "$v_passphrase" | zpool create \
   -o cachefile=/etc/zpool.cache \
   "${encryption_options[@]}" \
   -O mountpoint=/ -R $c_zfs_mount_dir -f \
-  $v_rpool_name $pools_mirror_option "${rpool_disks_partitions[@]}"
+  $v_rpool_name raidz2 "${rpool_disks_partitions[@]}"
 
 zfs create -o canmount=off -o mountpoint=none "$v_rpool_name/ROOT"
 zfs create -o canmount=off -o mountpoint=none "$v_bpool_name/BOOT"
