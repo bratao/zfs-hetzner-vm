@@ -42,7 +42,7 @@ c_deb_security_repo=https://deb.debian.org/debian-security
 
 c_default_zfs_arc_max_mb=800
 c_default_bpool_tweaks="-o ashift=12 -O compression=lz4"
-c_default_rpool_tweaks="-o ashift=12 -O acltype=posixacl -O compression=zstd-2 -O dnodesize=auto -O relatime=on -O xattr=sa -O normalization=formD recordsize=1M"
+c_default_rpool_tweaks="-o ashift=12 -O acltype=posixacl -O compression=zstd-2 -O dnodesize=auto -O relatime=on -O xattr=sa -O normalization=formD -O recordsize=1M"
 c_default_hostname=fivecity
 c_zfs_mount_dir=/mnt
 c_log_dir=$(dirname "$(mktemp)")/zfs-hetzner-vm
