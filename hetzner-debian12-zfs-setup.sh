@@ -329,7 +329,7 @@ function ask_pool_tweaks {
   v_bpool_tweaks=$(dialog --inputbox "Insert the tweaks for the boot pool" 30 100 -- "$c_default_bpool_tweaks" 3>&1 1>&2 2>&3)
   v_rpool_tweaks=$(dialog --inputbox "Insert the tweaks for the root pool" 30 100 -- "$c_default_rpool_tweaks" 3>&1 1>&2 2>&3)
 
-  print_variables v_bpool_tweaks v_rpool_tweaks
+  print_variables v_ v_rpool_tweaks
 }
 
 
@@ -547,6 +547,7 @@ echo "======= create zfs pools and datasets =========="
 # shellcheck disable=SC2086
 zpool create \
   $v_bpool_tweaks -O canmount=off -O devices=off \
+  -o compatibility=grub2 \
   -o autotrim=on \
   -O normalization=formD \
   -O relatime=on \
